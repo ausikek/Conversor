@@ -1,10 +1,25 @@
 from pytube import YouTube, Playlist
 import os
+import json
 
-download_path = ('/home/breno/Downloads/')
-file_quality = 0
+working_path = os.getcwd()
+
+#---about the config file---#
+#DOWNLOAD_PATH is where a folder containing your files will be created.
+#FILE_QUALITY is the bitrate you want your file to be coded.
+
+with open(f'{working_path}/VideoDownloader/app_config.json', 'r') as file:
+    config = json.load(file)
+    download_path_json = config['DOWNLOAD_PATH']
+    file_quality_json = config['FILE_QUALITY']
+
+download_path = f'{download_path_json}'
+file_quality = f'{file_quality_json}'
+
+file.close()
 
 chooser = int(input('''
+
 1 - Playlist de Vídeos
 2 - Playlist de Músicas
 3 - Vídeo
@@ -57,7 +72,7 @@ def Converter(path, Download_path):
             output_name = os.path.join(path, f'{str(0)}')
 
             os.rename(file_name, new_name)
-            os.system(f'ffmpeg -i {new_name} -b:a 192K -vn {output_name}.mp3')
+            os.system(f'ffmpeg -i {new_name} -b:a {file_quality}K -vn {output_name}.mp3')
 
             Pusher(path, storage[0].split('.')[0], Download_path)
 
